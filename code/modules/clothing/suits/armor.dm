@@ -1801,6 +1801,48 @@
 		bio = 0,
 		rad = 0)
 
+/obj/item/clothing/suit/armor/hunter/roachking
+	name = "hunter armor of the monarch"
+	desc = "A very heavily armored suit of chitin, leather, and bone. It is adorned with Emperor silk stitching and the pheromone glands of a Kaiser Roach, both treated so as to enhance the armor, \
+	and pacify those of roachy, chitinous, and unintelligent origin nearby. May annoy Cht'mant."
+	icon_state = "hunter_armor_roach"
+	item_state = "hunter_armor_roach"
+	blood_overlay_type = "armor"
+	action_button_name = "Toggle Pheromone Excretion"
+	armor_list = list(
+		melee = 10
+		bullet = 10
+		energy = 10
+		bomb = 10
+		bio = 0
+		rad = 5
+	)
+
+/obj/item/clothing/suit/armor/hunter/roachking/attack_self()
+	excrete()
+
+/obj/item/clothing/suit/armor/hunter/roachking/verb/excrete()
+	set category = "Object"
+	set name = "Toggle Pheromone Excretion"
+	set src in usr
+
+	if(usr.canmove && !usr.stat && !usr.restrained())
+		if(!src.active)
+			src.active = !src.active
+			to_chat(usr, "You squeeze the kaiser's gland, opening a small stitch.")
+			old_faction = src.holder.faction
+			if(src.holder.faction == "spiders")
+				src.holder.faction = "sproachder"
+			else
+				src.holder.faction = "roach"
+		else
+			src.active = !src.active
+			to_chat(usr, "You stretch the kaiser's gland, closing the stitch once more.")
+			src.holder.faction = old_faction
+		usr.update_action_buttons()
+
+/// End of lodge armor.
+
 /obj/item/clothing/suit/armor/vest/handmadewooden
 	name = "wooden armor"
 	desc = "A series of planks held into a relatively torso shaped form by cloth tied around the shoulders and waist. Then further padded with more cloth along the inside."
